@@ -14,15 +14,14 @@ from PIL import Image
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
-
-
-
-#to make a presentation import streamlit
 import streamlit as st
 
+st.set_page_config(layout='centered')
+
+#to make a presentation import streamlit
 billboard_df=pd.read_csv('Hot 100 Audio Features.csv')
 
-st.set_page_config(layout='centered')
+
 st.header('Billboard Hot weekly charts')
 st.subheader('Music analysis from spotify data')
 
@@ -180,7 +179,21 @@ top_12_genere_df.rename(columns={'spotify_track_duration_ms':'spotify_track_dura
 
 top_12_genere_gb=top_12_genere_df.groupby('maingenere').mean(numeric_only=True)
 
-curtain1=st.selectbox('Click to see',('Popularity','Duration','Danceability, Energy, Valence','Speechiness, Instrumentalness, Liveness, Acousticness','BPM'))
+explicit_songs = top_12_genere_df[top_12_genere_df.spotify_track_explicit == True]
+explicit_by_genre = explicit_songs['maingenere'].value_counts()
+
+not_explicit_songs = top_12_genere_df[top_12_genere_df.spotify_track_explicit == False]
+not_explicit_by_genre = not_explicit_songs['maingenere'].value_counts()
+
+unknown_explicit_songs = top_12_genere_df[top_12_genere_df.spotify_track_explicit == 'unknown']
+unknown_explicit_by_genre = unknown_explicit_songs['maingenere'].value_counts()
+
+explicit_df=pd.concat([explicit_by_genre,not_explicit_by_genre,unknown_explicit_by_genre],axis=1)
+explicit_df.columns=['explicit', 'not_explicit','unknown_explicit']
+explicit_df['maingenere'] = explicit_df.index
+
+curtain1=st.selectbox('Click to see',('Popularity','Duration','Danceability, Energy, Valence',
+                                      'Speechiness, Instrumentalness, Liveness, Acousticness','Explicit content','BPM'))
 if curtain1=='Popularity':
     plt.figure(figsize=(12,8))
     fig4 = px.bar(top_12_genere_gb, x=top_12_genere_gb.index, y=['spotify_track_popularity'], barmode='group',text_auto=True)
@@ -198,6 +211,16 @@ if curtain1=='Speechiness, Instrumentalness, Liveness, Acousticness':
     fig2 = px.bar(top_12_genere_gb, x=top_12_genere_gb.index, y=['speechiness','instrumentalness','liveness','acousticness'], barmode='group',text_auto=True)
     fig2.update_layout(title=dict(text="Main characteristics for genere", font=dict(size=40), automargin=True, yref='paper'))
     st.write(fig2)
+
+if curtain1=='Explicit content':
+    fig0=plt.figure(figsize=(12,10))
+    fig0 = px.pie(explicit_df, values="explicit", names="maingenere",hole=0.5,width =800,height=700)
+    fig0.update_layout(title_text="How many songs with explicit content for genre")
+    fig0.update_traces(textinfo='value+label')
+    #fig0.show()
+    st.write(fig0)
+
+
 if curtain1=='BPM':
     fig=plt.figure(figsize=(14,8))
     plt.plot(top_12_genere_gb.index,top_12_genere_gb.tempo,marker='o',markersize='12',linewidth=5)
@@ -217,7 +240,7 @@ bb_main12_df.loc[bb_main12_df.valence < 0.6, 'valence'] = 0
 ##like img
 
 img_like=Image.open('like.png')
-
+#st.write('thebug')
 st.sidebar.image(img_like,width=50)
 
 st.sidebar.write('Valence attribute - Vibe')
@@ -676,7 +699,7 @@ for k in range(1,13):
 
 st.title('Cluster Analysis')
 
-# scrive cosa sono
+# 
 
 st.markdown("""
 
@@ -739,9 +762,11 @@ st.markdown("""
 In general 0.49 is not a bad result but as we can see, the characteristics of the clusters are very similar
             """)
 
-if st.checkbox('Cluster characteristics'):
+four_cluster_df=cluster_df.copy()
+four_cluster_df['cluster']=clusters
+if st.checkbox('Numeric cluster characteristics'):
     cluster_mean=four_cluster_df.groupby('cluster').mean()
-    print(cluster_mean)
+    st.write(cluster_mean)
 
 ###
 
