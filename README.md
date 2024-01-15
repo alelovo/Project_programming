@@ -28,5 +28,5 @@ How to navigate through the files in this repository:
 
 * 'presentation_sl.py': where there is the code relating to the presentation on streamlit.
 
-* 'best of my project': Where I have arranged and explained the code, where what I consider most important about my project is contained (collab che devo caricare)
+* 'best of my project': Where I have arranged and explained the code, where what I consider most important about my project is contained (collab che devo caricare) (I suggest viewing this)
 

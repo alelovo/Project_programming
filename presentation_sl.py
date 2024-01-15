@@ -192,6 +192,8 @@ explicit_df=pd.concat([explicit_by_genre,not_explicit_by_genre,unknown_explicit_
 explicit_df.columns=['explicit', 'not_explicit','unknown_explicit']
 explicit_df['maingenere'] = explicit_df.index
 
+dist_explicit=top_12_genere_df.spotify_track_explicit.value_counts()
+
 curtain1=st.selectbox('Click to see',('Popularity','Duration','Danceability, Energy, Valence',
                                       'Speechiness, Instrumentalness, Liveness, Acousticness','Explicit content','BPM'))
 if curtain1=='Popularity':
@@ -213,6 +215,19 @@ if curtain1=='Speechiness, Instrumentalness, Liveness, Acousticness':
     st.write(fig2)
 
 if curtain1=='Explicit content':
+
+    fig=plt.figure(figsize=(12,8))
+    color=sb.color_palette('pastel6')
+    explode=[0.2,0.1,0.1]
+    plt.pie(dist_explicit,labels=dist_explicit.index,autopct='%.2f%%', startangle=90,
+            wedgeprops = { 'linewidth' : 3, 'edgecolor' : 'white' },colors=color,explode=explode)
+    plt.title('Percentige of songs with explicit content',size=22)
+    plt.legend()
+
+    #plt.show()
+    st.write(fig)
+
+
     fig0=plt.figure(figsize=(12,10))
     fig0 = px.pie(explicit_df, values="explicit", names="maingenere",hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="How many songs with explicit content for genre")
@@ -794,7 +809,7 @@ cluster_mean=four_cluster_df.groupby('cluster').mean()
 cluster_mean_wo_tempo=cluster_mean.drop('tempo', axis=1)
 
 
-curtain=st.selectbox('Click to see',('Cluster distribution','Cluster characteristics1','Cluster characteristics2','Maingenre distribution for cluster'))
+curtain=st.selectbox('Click to see',('Cluster distribution','Cluster characteristics1','Cluster characteristics2'))
 
 if curtain=='Cluster distribution':
    
@@ -848,12 +863,56 @@ if curtain=='Cluster characteristics2':
     plt.xticks(rotation=60)
     st.pyplot(fig=plt)
 
+##
+    
+
+    
+curtain=st.selectbox('Click to see',('Distribution of genre for cluster 1','Distribution of genre for cluster 2',
+                                     'Distribution of genre for cluster 3','Distribution of genre for cluster 4','Maingenre distribution for cluster'))
+
+    
+if curtain=='Distribution of genre for cluster 1':
+    fig0=plt.figure(figsize=(12,8))
+    fig0 = px.pie(c1234_df, values="c1", names=c1234_df.index,hole=0.5,width =800,height=700)
+    fig0.update_layout(title_text="Distribution of genre for cluster 1")
+    fig0.update_traces(textinfo='value+label+percent')
+    #fig0.show()
+    st.write(fig0)
+
+if curtain=='Distribution of genre for cluster 2':
+    fig0=plt.figure(figsize=(12,8))
+    fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
+    fig0.update_layout(title_text="Distribution of genre for cluster 2")
+    fig0.update_traces(textinfo='value+label+percent')
+    #fig0.show()
+    st.write(fig0)
+
+if curtain=='Distribution of genre for cluster 3':
+    fig0=plt.figure(figsize=(12,8))
+    fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
+    fig0.update_layout(title_text="Distribution of genre for cluster 3")
+    fig0.update_traces(textinfo='value+label+percent')
+    #fig0.show()
+    st.write(fig0)
+
+if curtain=='Distribution of genre for cluster 4':
+    fig0=plt.figure(figsize=(12,8))
+    fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
+    fig0.update_layout(title_text="Distribution of genre for cluster 4")
+    fig0.update_traces(textinfo='value+label+percent')
+    #fig0.show()
+    st.write(fig0)
+
+
+
 if curtain=='Maingenre distribution for cluster':
     fig1 = px.bar(c1234_df, x=c1234_df.index, y=['c1','c2','c3','c4'], barmode='group',text_auto=True)
 
     fig1.update_layout(title=dict(text="Distribution of genre for each cluster", font=dict(size=30), automargin=True, yref='paper'))
 
     st.write(fig1)
+
+
 
 
 
