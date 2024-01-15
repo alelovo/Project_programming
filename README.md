@@ -20,3 +20,13 @@ The main things carried out in the project are:
 
 - Build a presentation in streamlit
 
+-------------------------------------------
+
+How to navigate through the files in this repository:
+
+* 'project.ipynb': it is the file where all my work is present, including unused graphs and models (this file is not perfectly ordered from a content point of view), I created a file that summarizes and explains my path which I called 'best of my project'.
+
+* 'presentation_sl.py': where there is the code relating to the presentation on streamlit.
+
+* 'best of my project': Where I have arranged and explained the code, where what I consider most important about my project is contained (collab che devo caricare)
+
