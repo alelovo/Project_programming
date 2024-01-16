@@ -194,8 +194,11 @@ explicit_df['maingenere'] = explicit_df.index
 
 dist_explicit=top_12_genere_df.spotify_track_explicit.value_counts()
 
-curtain1=st.selectbox('Click to see',('Popularity','Duration','Danceability, Energy, Valence',
+curtain1=st.selectbox('Click to see - characteristics for maingenre',('None','Popularity','Duration','Danceability, Energy, Valence',
                                       'Speechiness, Instrumentalness, Liveness, Acousticness','Explicit content','BPM'))
+
+if curtain1 == 'None':
+    pass
 if curtain1=='Popularity':
     plt.figure(figsize=(12,8))
     fig4 = px.bar(top_12_genere_gb, x=top_12_genere_gb.index, y=['spotify_track_popularity'], barmode='group',text_auto=True)
@@ -231,7 +234,7 @@ if curtain1=='Explicit content':
     fig0=plt.figure(figsize=(12,10))
     fig0 = px.pie(explicit_df, values="explicit", names="maingenere",hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="How many songs with explicit content for genre")
-    fig0.update_traces(textinfo='value+label')
+    fig0.update_traces(textinfo='value+label+percent')
     #fig0.show()
     st.write(fig0)
 
@@ -441,11 +444,13 @@ top_10_liveness_trak['Performer-Song']=top_10_liveness_trak['Song']+ ' - ' +top_
 
 
 
-curtain=st.selectbox('Click to see',('Top 10 Popular song - for genre','Top 10 Loudness songs - for genre',
+curtain=st.selectbox('Click to see - Top 10 Songs main characteristics',('None','Top 10 Popular song - for genre','Top 10 Loudness songs - for genre',
                                      'Top 10 Danceability songs - for genre','Top 10 Energy songs - for genre',
                                      'Top 10 Speechiness songs - for genre','Top 10 Acousticness songs - for genre',
                                      'Top 10 Instrumentalness songs - for genre','Top 10 Liveness songs - for genre',
                                      'Top 10 Longest songs - for genre'))
+if curtain == 'None':
+    pass
 if curtain=='Top 10 Popular song - for genre':
     fig=plt.figure(figsize=(12,8))
     ax=sb.scatterplot(data = top_50_popular_song_df[0:10], x = 'Performer - Song', y = 'spotify_track_popularity',hue='maingenere',s=600)
@@ -597,10 +602,11 @@ if st.sidebar.checkbox('Metal'):
 
     st.image(img_tool,width=300)
 
-    curtain=st.selectbox('Click to see',('Main characteristics of Tool Songs - attribute 1',
+    curtain=st.selectbox('Click to see - Tool songs characteristics',('None','Main characteristics of Tool Songs - attribute 1',
                                          'Main characteristics of Tool Songs - attribute 2',
                                          'Main characteristics of Tool Songs - attribute 3'))
-    
+    if curtain == 'None':
+        pass
     if curtain=='Main characteristics of Tool Songs - attribute 1':
         fig1 = px.bar(tool_df, x=tool_df.Song, y=['danceability','energy','valence','speechiness','instrumentalness','liveness'], barmode='group',text_auto=True)
         fig1.update_layout(title=dict(text="Main characteristics of Tool Songs", font=dict(size=40), automargin=True, yref='paper'))
@@ -624,9 +630,11 @@ if st.sidebar.checkbox('Rock'):
 
     st.image(img_pf,width=300)
 
-    curtain=st.selectbox('Click to see',('Main characteristics of Pink Floyd Songs - attribute 1',
+    curtain=st.selectbox('Click to see - Pink Floyd songs characteristics',('None','Main characteristics of Pink Floyd Songs - attribute 1',
                                          'Main characteristics of Pink Floyd Songs - attribute 2',
                                          'Main characteristics of Pink Floyd Songs - attribute 3'))
+    if curtain == 'None':
+        pass
     
     if curtain=='Main characteristics of Pink Floyd Songs - attribute 1':
         fig1 = px.bar(pf_df, x=pf_df.Song, y=['danceability','energy','valence','speechiness','instrumentalness','liveness'], barmode='group',text_auto=True)
@@ -651,9 +659,11 @@ if st.sidebar.checkbox('Rap'):
 
     st.image(img_kl,width=300)
 
-    curtain=st.selectbox('Click to see',('Main characteristics of Kendrick Lamar Songs - attribute 1',
+    curtain=st.selectbox('Click to see - Kendrick Lamar songs characteristics',('None','Main characteristics of Kendrick Lamar Songs - attribute 1',
                                          'Main characteristics of Kendrick Lamar Songs - attribute 2',
                                          'Main characteristics of Kendrick Lamar Songs - attribute 3'))
+    if curtain1 == 'None':
+        pass
     
     if curtain=='Main characteristics of Kendrick Lamar Songs - attribute 1':
         fig1 = px.bar(kl_df, x=kl_df.Song, y=['danceability','energy','valence','speechiness','instrumentalness','liveness'], barmode='group')
@@ -678,9 +688,11 @@ if st.sidebar.checkbox('Pop'):
 
     st.image(img_gor,width=300)
 
-    curtain=st.selectbox('Click to see',('Main characteristics of Gorillaz Songs - attribute 1',
+    curtain=st.selectbox('Click to see - Gorillaz songs characteristics',('None','Main characteristics of Gorillaz Songs - attribute 1',
                                          'Main characteristics of Gorillaz Songs - attribute 2',
                                          'Main characteristics of Gorillaz Songs - attribute 3'))
+    if curtain1 == 'None':
+        pass
     
     if curtain=='Main characteristics of Gorillaz Songs - attribute 1':
         fig1 = px.bar(gorillaz_df, x=gorillaz_df.Song, y=['danceability','energy','valence','speechiness','instrumentalness','liveness'], barmode='group',text_auto=True)
@@ -809,9 +821,14 @@ cluster_mean=four_cluster_df.groupby('cluster').mean()
 cluster_mean_wo_tempo=cluster_mean.drop('tempo', axis=1)
 
 
-curtain=st.selectbox('Click to see',('Cluster distribution','Cluster characteristics1','Cluster characteristics2'))
+curtain=st.selectbox('Click to see - Cluster characteristics',('None','Cluster distribution','Cluster characteristics1','Cluster characteristics2'))
+
+if curtain == 'None':
+    pass
 
 if curtain=='Cluster distribution':
+
+    
    
     unique_clusters = np.unique(clusters)
 
@@ -867,9 +884,12 @@ if curtain=='Cluster characteristics2':
     
 
     
-curtain=st.selectbox('Click to see',('Distribution of genre for cluster 1','Distribution of genre for cluster 2',
-                                     'Distribution of genre for cluster 3','Distribution of genre for cluster 4','Maingenre distribution for cluster'))
+curtain=st.selectbox('Click to see - What we find in clusters',('None','Distribution of genre for cluster 1','Distribution of genre for cluster 2',
+                                     'Distribution of genre for cluster 3','Distribution of genre for cluster 4',
+                                     'Maingenre distribution for cluster'))
 
+if curtain == 'None':
+    pass
     
 if curtain=='Distribution of genre for cluster 1':
     fig0=plt.figure(figsize=(12,8))
