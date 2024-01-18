@@ -28,5 +28,9 @@ How to navigate through the files in this repository:
 
 * **'presentation_sl.py'**: where there is the code relating to the presentation on streamlit.
 
-* **'Best of my project'**: Where I have arranged and explained the code, where what I consider most important about my project is contained (I suggest viewing this).
+* **'Best of my project'**: Where I have arranged and explained the code, where what I consider most important about my project is contained (I suggest viewing this). 
+
+    **Note**: plots made with the plotly express library are not visibile in this file when it’s viewed via GitHub.
+
+
 
