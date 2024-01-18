@@ -22,10 +22,22 @@ st.set_page_config(layout='centered')
 billboard_df=pd.read_csv('Hot 100 Audio Features.csv')
 
 
-st.header('Billboard Hot weekly charts')
-st.subheader('Music analysis from spotify data')
+#st.title('Billboard Hot 100')
 
-st.title('DataSet Link - Description')
+img_bil=Image.open('billhot100.png')
+st.image(img_bil,width=550)
+
+#st.subheader('Music analysis from Billboard hot chart - spotify data')
+
+st.markdown("""
+            The **Billboard Hot 100 Weekly Charts** with Audio dataset 
+            is a comprehensive collection that combines the historical 
+            data of the Billboard Hot 100 weekly singles charts **with detailed audio features extracted from Spotify**. 
+            The **dataset provides valuable insights into the popularity and musical attributes of songs that have appeared
+            on the Billboard charts**.
+            """)
+
+st.subheader('DataSet Link - Description')
 curtain=st.selectbox('Click to see',('Link','Description of the Dataset'))
 if curtain=='Link':
     st.write('https://www.kaggle.com/datasets/thedevastator/billboard-hot-100-audio-features')
