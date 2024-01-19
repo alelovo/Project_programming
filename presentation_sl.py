@@ -18,16 +18,11 @@ import streamlit as st
 
 st.set_page_config(layout='centered')
 
-#to make a presentation import streamlit
 billboard_df=pd.read_csv('Hot 100 Audio Features.csv')
 
 
-#st.title('Billboard Hot 100')
-
 img_bil=Image.open('billhot100.png')
 st.image(img_bil,width=550)
-
-#st.subheader('Music analysis from Billboard hot chart - spotify data')
 
 st.markdown("""
             The **Billboard Hot 100 Weekly Charts** with Audio dataset 
@@ -71,7 +66,6 @@ if st.checkbox('Dataset'):
     st.write(billboard_df.tail(5))
     st.write(billboard_df.describe().T)
 
-#cleaning df
 del billboard_df['spotify_track_id']
 del billboard_df['spotify_track_preview_url']
 
@@ -116,7 +110,6 @@ for null_column in billboard_df:
 
 billboard_df=billboard_df.dropna()
 
-### CORRELATION
 
 if st.checkbox('Preliminary correlation analysis'):
     numeric_variable_df=billboard_df.iloc[:,8:21]
@@ -148,7 +141,6 @@ if st.checkbox('Preliminary correlation analysis'):
 
     st.write(fig_1)
 
-#12 maingeneri
 numbers_of_genere=billboard_df.maingenere.value_counts()[0:12]
 
 st.title('What are the main genres?')
@@ -173,7 +165,6 @@ if st.checkbox('12 main genres presence'):
     plt.imshow(genere_importance, interpolation='bilinear')
 
     plt.axis("off")
-    #plt.show()
     st.pyplot(fig)
 
 
@@ -239,7 +230,6 @@ if curtain1=='Explicit content':
     plt.title('Percentige of songs with explicit content',size=22)
     plt.legend()
 
-    #plt.show()
     st.write(fig)
 
 
@@ -247,7 +237,6 @@ if curtain1=='Explicit content':
     fig0 = px.pie(explicit_df, values="explicit", names="maingenere",hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="How many songs with explicit content for genre")
     fig0.update_traces(textinfo='value+label+percent')
-    #fig0.show()
     st.write(fig0)
 
 
@@ -259,18 +248,15 @@ if curtain1=='BPM':
     plt.xlabel('Maingenere')
     plt.ylabel('Mean BPM')
     st.write(fig)
-
-#to add a sidebar
     
 bb_main12_df=top_12_genere_df.copy()
 songs_attribute_list=['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness','tempo']
 bb_main12_df.loc[bb_main12_df.valence >= 0.6, 'valence'] = 1
 bb_main12_df.loc[bb_main12_df.valence < 0.6, 'valence'] = 0
 
-##like img
 
 img_like=Image.open('like.png')
-#st.write('thebug')
+
 st.sidebar.image(img_like,width=50)
 
 st.sidebar.write('Valence attribute - Vibe')
@@ -312,7 +298,6 @@ if st.sidebar.checkbox('Like / Dislike songs for genre?'):
     fig4.update_layout(title=dict(text="Like/Dislike songs for genere", font=dict(size=50), automargin=True, yref='paper'))
     st.write(fig4)
 
-####
 performer_songs_genere_df=pd.DataFrame(columns=['Performer','Song','maingenere','spotify_track_popularity'])
 performer_songs_genere_df['Performer']=billboard_df.Performer
 performer_songs_genere_df['Song']=billboard_df.Song
@@ -341,7 +326,6 @@ mask_dance=top_songs_for_genre_df.maingenere=='dance'
 mask_metal=top_songs_for_genre_df.maingenere=='metal'
 
 
-#### grafico 
 st.title('What about Songs?')
 
 if st.checkbox('Best songs for populaity/genre'):
@@ -384,7 +368,6 @@ if st.checkbox('Best songs for populaity/genre'):
     plt.legend()
     st.write(fig)
 
-##
     
 performer_w_most_songs=top_12_genere_df.Performer.value_counts()
 performer_w_most_songs_df = performer_w_most_songs.to_frame(name="number of songs")
@@ -398,7 +381,6 @@ if st.checkbox('Performer with the most songs'):
     fig0.update_traces(textinfo='value+label')
     st.write(fig0)
 
-#
     
 top_50_popular_song=billboard_df.sort_values(by='spotify_track_popularity',ascending=False).head(50)
 top_50_popular_song_df=pd.DataFrame(columns=['Performer','Song','spotify_track_popularity','maingenere'])
@@ -408,47 +390,38 @@ top_50_popular_song_df['spotify_track_popularity']=top_50_popular_song.spotify_t
 top_50_popular_song_df['maingenere']=top_50_popular_song.maingenere
 top_50_popular_song_df['Performer - Song']=top_50_popular_song['Performer']+' - '+ top_50_popular_song['Song']
 
-##
 
 top_10_loudness_trak=billboard_df[['loudness','Song','Performer','maingenere']].sort_values(by='loudness',ascending=True)[:10]
 top_10_loudness_trak['Performer-Song']=top_10_loudness_trak['Song']+ ' - ' +top_10_loudness_trak['Performer']
 
-###
 
 top_10_danceability_trak=billboard_df[['danceability','Song','Performer','maingenere']].sort_values(by='danceability',ascending=False)[:10]
 top_10_danceability_trak['Performer-Song']=top_10_danceability_trak['Song']+ ' - ' +top_10_danceability_trak['Performer']
 top_10_danceability_trak['Performer-Song'] = top_10_danceability_trak['Performer-Song'].str.replace('$','S')
 
-####
 
 top_10_energy_trak=billboard_df[['energy','Song','Performer','maingenere']].sort_values(by='energy',ascending=False)[:10]
 top_10_energy_trak['Performer-Song']=top_10_energy_trak['Song']+ ' - ' +top_10_energy_trak['Performer']
 
-#####
 
 top_10_speechiness_trak=billboard_df[['speechiness','Song','Performer','maingenere']].sort_values(by='speechiness',ascending=False)[:10]
 top_10_speechiness_trak['Performer-Song']=top_10_speechiness_trak['Song']+ ' - ' +top_10_speechiness_trak['Performer']
 
-######
 
 top_10_acousticness_trak=billboard_df[['acousticness','Song','Performer','maingenere']].sort_values(by='acousticness',ascending=False)[:10]
 top_10_acousticness_trak['Performer-Song']=top_10_acousticness_trak['Song']+ ' - ' +top_10_acousticness_trak['Performer']
 
-######
 
 top_10_instrumentalness_trak=billboard_df[['instrumentalness','Song','Performer','maingenere']].sort_values(by='instrumentalness',ascending=False)[:10]
 top_10_instrumentalness_trak['Performer-Song']=top_10_instrumentalness_trak['Song']+ ' - ' +top_10_instrumentalness_trak['Performer']
 
-######
 
 top_10_liveness_trak=billboard_df[['liveness','Song','Performer','maingenere']].sort_values(by='liveness',ascending=False)[:10]
 top_10_liveness_trak['Performer-Song']=top_10_liveness_trak['Song']+ ' - ' +top_10_liveness_trak['Performer']
 
-###
 top_10_longest_trak=top_12_genere_df[['spotify_track_duration_minute','Song','Performer','maingenere']].sort_values(by='spotify_track_duration_minute',ascending=False)[:10]
 top_10_longest_trak['Performer-Song']=top_10_longest_trak['Song']+ ' - ' +top_10_longest_trak['Performer']
 
-###
 
 top_10_liveness_trak=billboard_df[['liveness','Song','Performer','maingenere']].sort_values(by='liveness',ascending=False)[:10]
 top_10_liveness_trak['Performer-Song']=top_10_liveness_trak['Song']+ ' - ' +top_10_liveness_trak['Performer']
@@ -585,7 +558,6 @@ if curtain=='Top 10 Longest songs - for genre':
 
     st.write(fig)
 
-###
     
 mask_toll=top_12_genere_df.Performer=='Tool'
 tool_df=top_12_genere_df[mask_toll]
@@ -599,8 +571,6 @@ kl_df=top_12_genere_df[mask_kl]
 mask_gorillaz=top_12_genere_df.Performer=='Gorillaz'
 gorillaz_df=top_12_genere_df[mask_gorillaz]
 
-
-##
 img_nota=Image.open('nota2.png')
 
 st.sidebar.image(img_nota,width=50)
@@ -720,8 +690,6 @@ if st.sidebar.checkbox('Pop'):
         fig1.update_layout(title=dict(text="Main characteristics of Gorillaz Songs", font=dict(size=30), automargin=True, yref='paper'))
         st.write(fig1)
     
-
-## CLUSTER
         
 column_to_use=['danceability','energy','key','loudness','mode', 'speechiness', 'acousticness', 'instrumentalness', 'liveness','valence','time_signature','tempo','spotify_track_duration_minute']
 
@@ -738,7 +706,6 @@ for k in range(1,13):
 
 st.title('Cluster Analysis')
 
-# 
 
 st.markdown("""
 
@@ -807,8 +774,6 @@ if st.checkbox('Numeric cluster characteristics'):
     cluster_mean=four_cluster_df.groupby('cluster').mean()
     st.write(cluster_mean)
 
-###
-
 etichette=kmeans.labels_
 
 cluster1=top_12_genere_df[etichette==0]
@@ -823,7 +788,6 @@ c4_n_songs_maingenere=cluster4.maingenere.value_counts()
 c1234_df=pd.concat([c1_n_songs_maingenere,c2_n_songs_maingenere,c3_n_songs_maingenere,c4_n_songs_maingenere],axis=1)
 c1234_df.columns=['c1','c2','c3','c4']
 
-####
 
 four_cluster_df=cluster_df.copy()
 four_cluster_df['cluster']=clusters
@@ -880,7 +844,6 @@ if curtain=='Cluster characteristics1':
     plt.title('Cluster Characteristics')
     plt.legend(bbox_to_anchor=(1.0, 1.0))
     plt.xticks(rotation=60)
-    #t.pyplot(fig)
     st.pyplot(fig=plt)
 
 if curtain=='Cluster characteristics2':
@@ -891,9 +854,6 @@ if curtain=='Cluster characteristics2':
     plt.legend(bbox_to_anchor=(1.0, 1.0))
     plt.xticks(rotation=60)
     st.pyplot(fig=plt)
-
-##
-    
 
     
 curtain=st.selectbox('Click to see - What we find in clusters',('None','Distribution of genre for cluster 1','Distribution of genre for cluster 2',
@@ -908,7 +868,6 @@ if curtain=='Distribution of genre for cluster 1':
     fig0 = px.pie(c1234_df, values="c1", names=c1234_df.index,hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="Distribution of genre for cluster 1")
     fig0.update_traces(textinfo='value+label+percent')
-    #fig0.show()
     st.write(fig0)
 
 if curtain=='Distribution of genre for cluster 2':
@@ -916,7 +875,6 @@ if curtain=='Distribution of genre for cluster 2':
     fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="Distribution of genre for cluster 2")
     fig0.update_traces(textinfo='value+label+percent')
-    #fig0.show()
     st.write(fig0)
 
 if curtain=='Distribution of genre for cluster 3':
@@ -924,7 +882,6 @@ if curtain=='Distribution of genre for cluster 3':
     fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="Distribution of genre for cluster 3")
     fig0.update_traces(textinfo='value+label+percent')
-    #fig0.show()
     st.write(fig0)
 
 if curtain=='Distribution of genre for cluster 4':
@@ -932,7 +889,6 @@ if curtain=='Distribution of genre for cluster 4':
     fig0 = px.pie(c1234_df, values="c2", names=c1234_df.index,hole=0.5,width =800,height=700)
     fig0.update_layout(title_text="Distribution of genre for cluster 4")
     fig0.update_traces(textinfo='value+label+percent')
-    #fig0.show()
     st.write(fig0)
 
 
